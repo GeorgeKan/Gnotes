@@ -37,6 +37,70 @@ def tutorials_filter():
     except sqlalchemy.exc.NoResultFound:
         return template('tutorials', tutorials=[])
 
+
+#Tutorials delete by id
+@app.route('/tutorials/del', method='POST')
+def tutorial_delete():
+    data = request.json
+    if not data or "id" not in data:
+        response.status = 400
+        return {'status':'error in request'}
+    tutorialID = int(data['id'])
+    with Session(engine) as session:
+        tutorial = session.get(Tutorial, tutorialID)
+        session.delete(tutorial)
+        session.commit()
+    return {"redirect":"/tutorials"}
+
+#Tutorials post edited data
+@app.route('/tutorials/edit', method='POST')
+def tutorial_edited_data():
+    id = int(request.forms.tutorialid)
+    name = str(request.forms.tutorialname).strip()
+    desc = str(request.forms.tutorialdesc).strip()
+    url = str(request.forms.tutorialurl).strip()
+    info = str(request.forms.tutorialinfo).strip()
+    tag1 = int(request.forms.tag1)
+    tag2 = int(request.forms.tag2)
+    tag3 = int(request.forms.tag3)
+    if len(name) < 3:
+        response.set_cookie("msg", "Give valid Tutorial name. (Name more than 3 chars)")
+        return redirect(f"/tutorials/edit/{id}")
+    if len(desc) < 3:
+        response.set_cookie("msg", "Give valid Tutorial Description.")
+        return redirect(f"/tutorials/edit/{id}")
+    if tag1 == -1 and tag2 == -1 and tag3 == -1:
+        response.set_cookie("msg", "Give at leats one Tag for the tutorial")
+        return redirect(f"/tutorials/edit/{id}")
+    with Session(engine) as session:
+        tutorial = session.get(Tutorial, id)
+        stmt = select(Tag).where(col(Tag.id).in_([tag1,tag2,tag3]))
+        tags = list(session.exec(stmt).all())
+        tutorial.tags = tags
+        tutorial.name = name
+        tutorial.desc = desc
+        tutorial.url = url
+        tutorial.info = info
+        session.add(tutorial)
+        session.commit()
+    redirect('/tutorials')
+
+
+
+#tutorials select package to edit
+@app.route('/tutorials/edit/<id:int>', method='GET')
+def tutorials_edit_form(id:int):
+    with Session(engine) as session:
+            tutorial = session.get(Tutorial,id)
+            if tutorial:
+                stmt = select(Tag)
+                tags = list(session.exec(stmt).all())
+                msg = request.get_cookie("msg")
+                response.set_cookie("msg", "")
+                return template('edittutorial', tutorial=tutorial, tags=tags, msg=msg)
+            else:
+                redirect('/tutorials')
+
 #Tutorial details
 @app.route('/tutorials/<id:int>', method='GET')
 def package_details(id):

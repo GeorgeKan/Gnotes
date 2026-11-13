@@ -1,0 +1,97 @@
+% include('header.html', title='Edit Tutorial')
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+<body>
+    <div class="container">
+    % include('menu.html', title="Tutorials")
+    <form action="/tutorials/edit" method="POST" id="tutorialForm">
+        <button type=submit onclick="return false;" style="display:none;"></button>
+        <fieldset>
+            <legend>Edit Tutorial</legend>
+            <input type="hidden" id="tutorialid" name="tutorialid" value="{{tutorial.id}}" />
+            <div class="input-group vertical">
+                <label for="tutorialname">Tutorial Name :</label>
+            <input type="text" value="{{tutorial.name}}" name="tutorialname" id="tutorialname"/>
+            </div>
+            <div class="input-group vertical">
+            <label for="tutorialdesc">Package Desc :</label>
+            <input type="text" value="{{tutorial.desc}}" name="tutorialdesc" id="tutorialdesc"/>
+            </div>
+            <div class="input-group vertical">
+            <label for="tutorialurl">Package Url :</label>
+            <input type="text" value="{{tutorial.url}}" name="tutorialurl" id="tutorialurl"/>
+            </div>
+            <div class="input-group vertical">
+            <label for="editor">tutorial Info and Code :</label>
+            <div id="editor">{{!tutorial.info}}</div>
+            </div>
+            <input type="hidden" id="tutorialinfo" name="tutorialinfo" />
+            <div class="input-group responsive-margin">
+                 <label for="tag1">Tag 1 :</label>
+                <select name="tag1" id="tag1">
+                        <option value="-1">--No Tag--</option>
+                    %for tag in tags:
+                    % slt = '' if len(tutorial.tags) < 1 else 'selected' if tutorial.tags[0].id == tag.id else ''
+                        <option 
+                        {{slt}}
+                        value="{{tag.id}}">{{tag.name.capitalize()}}</option>
+                    %end
+                </select>
+                <label for="tag2">Tag 2 :</label>
+                <select name="tag2" id="tag2">
+                    <option value="-1">--No Tag--</option>
+                    %for tag in tags:
+                        % slt = '' if len(tutorial.tags) < 2 else 'selected' if tutorial.tags[1].id == tag.id else ''
+                        <option {{slt}} value="{{tag.id}}">{{tag.name.capitalize()}}</option>
+                    %end
+                </select>
+                <label for="tag3">Tag 3 :</label>
+                <select name="tag3" id="tag3">
+                    <option value="-1">--No Tag--</option>
+                    %for tag in tags:
+                    % slt = '' if len(tutorial.tags) < 3 else 'selected' if tutorial.tags[2].id == tag.id else ''
+                        <option {{slt}} value="{{tag.id}}">{{tag.name.capitalize()}}</option>
+                    %end
+                </select>
+            </div>
+            <div class="row">
+            <button type="submit">Save Tutorial</button>
+            </div>
+        </fieldset>
+    </form>
+    <div class="row">
+        <div class="col-sm-2">
+            <a href="/tutorials" class="button shadowed">Cancel</a>
+        </div>
+        <div class="col-sm-8 col-sm-offset-2">
+            <h4>{{msg or ""}}</h4>
+        </div>    
+    </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+<script>
+    const quill = new Quill('#editor', {
+        modules: {
+            toolbar: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ['bold', 'italic', 'underline', 'strike'],
+      ['code-block', 'blockquote'],
+      [{ 'color': [] }, { 'background': [] }],  
+     [{ 'align': [] }],
+       ['clean']    
+            ]
+        },
+    theme: 'snow'
+  });
+
+  const form = document.getElementById('tutorialForm');
+
+  form.onsubmit = function() {
+      const htmlContent = quill.root.innerHTML;
+      const hiddenInput = document.getElementById('tutorialinfo');
+      hiddenInput.value = htmlContent;
+      return true; 
+    };
+</script>
+</body>
+</html>

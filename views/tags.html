@@ -25,7 +25,7 @@
     <div class="section">
         <div class="row">
      <div class="col-sm-8"><h2>{{tag.name.capitalize()}}</h2></div>
-     <div class="col-sm-1"><mark class="tertiary shadowed">{{len(tag.packages)}}</mark></div>
+     <div class="col-sm-1"><mark class="tertiary shadowed">{{len(tag.packages) + len(tag.tutorials)}}</mark></div>
      <div class="col-sm-2">
         <a href="tags/{{tag.name}}">
         <i data-feather="info"></i></a></div>

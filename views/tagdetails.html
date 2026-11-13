@@ -3,7 +3,7 @@
     <div class="container">
     % include('menu.html', title="Tag details")
     <div class="row responsive-margin">
-    <div class="col-sm-8 col-sm-offset-2" style="text-align: center;"><h2>Packages for: #{{tag.name.capitalize()}}</h2></div>
+    <div class="col-sm-8 col-sm-offset-2" style="text-align: center;"><h2>Packages for: #{{tag.name.capitalize()}} - {{len(tag.packages)}}</h2></div>
     </div>
             % counter = 0
     %for package in tag.packages:
@@ -27,10 +27,10 @@
     </div>
     <div class="section">
         <div class="row">
-            %for tag in package.tags:
+            %for tagitem in package.tags:
                 <div class="col-sm-4">
                     <h5><strong>
-                        <a href="{{tag.name}}">#{{tag.name}}</a>
+                        <a href="{{tagitem.name}}">#{{tagitem.name}}</a>
                     </strong></h5>
                 </div>
             %end
@@ -47,6 +47,54 @@
     % if counter < 3:
         </div>
     %end
+
+        
+    <div class="row responsive-margin">
+    <div class="col-sm-8 col-sm-offset-2" style="text-align: center;"><h2>Tutorials for: #{{tag.name.capitalize()}} - {{len(tag.tutorials)}}</h2></div>
+    </div>
+            % counter = 0
+    %for tutorial in tag.tutorials:
+    % if counter == 0:
+        <div class="row">
+    % end
+           <div class="col-sm-4">
+   <div class="card">
+    <div class="section">
+        <div class="row">
+     <div class="col-sm-9"><h2>{{tutorial.name}}</h2></div>
+     <div class="col-sm-2 col-sm-offset-1">
+        <a href="/tutorials/{{tutorial.id}}" class="button small inverse shadowed">
+            <i data-feather="more-vertical"></i>
+        </a>
+    </div>
+    </div>
+    </div>
+    <div class="section">
+        <h5>{{tutorial.desc}}</h5>
+    </div>
+    <div class="section">
+        <div class="row">
+            %for tagitem in tutorial.tags:
+                <div class="col-sm-4">
+                    <h5><strong>
+                        <a href="{{tagitem.name}}">#{{tagitem.name}}</a>
+                    </strong></h5>
+                </div>
+            %end
+        </div>
+    </div>
+    </div>
+    </div>
+    % counter += 1
+    % if counter == 3:
+            </div>
+    %   counter = 0
+    % end
+    % end
+    % if counter < 3:
+        </div>
+    %end
+
 
     
       <div class="row responsive-margin">
