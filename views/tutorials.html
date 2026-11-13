@@ -1,0 +1,66 @@
+% include('header.html', title='Tutorials Page')
+<body>
+    <div class="container">
+    % include('menu.html', title="Tutorials")
+        
+    <div class="row responsive-margin">
+    <div class="col-sm-8 col-sm-offset-2" style="text-align: center;"><h2>Tutorials List</h2></div>
+    </div>
+    <form action="/tutorials" method="POST">
+        <fieldset>
+            <legend>Filter Tutorials</legend>
+            <label for="filter">Filter :</label>
+            <input type="text" name="filter" id="filter"/>
+        <input type="submit" value="Show"/>
+        </fieldset>
+    </form>
+
+    %for tutorial in tutorials:
+    
+    <div class="row">
+        <div class="col-sm-10 col-sm-offset-1">
+            <div class="card fluid">
+                <div class="secction">
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <a href="/tutorials/{{tutorial.id}}">
+                                <i data-feather="info" style="margin: 5px;"></i>
+                            </a>
+                        </div>
+                        <div class="col-sm-11">
+                            <h4>{{tutorial.name}} </h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-9">
+                            <p>{{tutorial.desc}}</p>
+                        </div>
+
+                         %for tag in tutorial.tags:
+                <div class="col-sm-1">
+                    <strong>
+                        <a href="tags/{{tag.name}}">#{{tag.name}}</a>
+                    </strong>
+                </div>
+                        %end                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    %end
+
+
+
+    <div class="row responsive-margin">
+        <div class="col-sm-4">
+            <a href="/tutorials/add" class="button">Add New Tutorial</a>
+        </div>
+    </div>
+
+    </div>
+    <script>
+      feather.replace();
+    </script>
+</body>
+</html>

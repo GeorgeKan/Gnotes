@@ -1,0 +1,74 @@
+% include('header.html', title='Package Details')
+<body>
+    <div class="container">
+    % include('menu.html', title="Pkg details")
+    
+    <div class="row responsive-margin">
+    <div class="col-sm-4 col-sm-offset-1">
+        <h2>{{package.name.capitalize()}}</h2></div>
+    
+    <div class="col-sm-1">
+        <a href="/packages/edit/{{package.id}}">
+        <i data-feather="edit"></i>
+        </a>
+    </div>
+    <div class="col-sm-1" data-id="{{package.id}}" id="deletePackage">
+            <i data-feather="x-square"></i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-1" >
+            <h4>{{package.desc}}</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-1">
+            <h4>{{package.url}}</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-1">
+            <pre>{{ !package.info or "<p><strong>No Package info or Code</strong></p>" }}</pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+            %for tag in package.tags:
+                <div class="col-sm-3">
+                    <h5><strong>
+                        <a href="tags/{{tag.name}}">#{{tag.name}}</a>
+                    </strong></h5>
+                </div>
+            %end
+        </div>
+
+    <div class="row responsive-margin">
+        <div class="col-sm-4">
+            <a href="/packages" class="button">Back To Packages</a>
+        </div>
+    </div>
+
+     </div>
+      <script>
+      feather.replace();
+        delete_button = document.getElementById("deletePackage")
+      delete_button.addEventListener('click',async () => {
+        data = {
+            id: Number(delete_button.dataset.id)
+        }    
+        const responce = await fetch('/packages/del', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        if(!responce.ok) {
+            alert('Errror. I can not delete package')
+        }
+        const result = await responce.json()
+        window.location.href = result.redirect
+      });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+% include('header.html', title='Main Page')
+<body>
+    <div class="container">
+% include('menu.html', title="Notes Main")
+
+ <div class="row responsive-margin">
+    <div class="col-sm-8 col-sm-offset-2" style="text-align: center;"><h2>Packages List</h2></div>
+    </div>
+
+% counter = 0
+    %for package in packages:
+    % if counter == 0:
+        <div class="row">
+    % end
+           <div class="col-sm-4">
+   <div class="card">
+    <div class="section">
+        <div class="row">
+     <div class="col-sm-9"><h2>{{package.name}}</h2></div>
+     <div class="col-sm-2 col-sm-offset-1">
+        <a href="packages/{{package.name}}">
+            <i data-feather="info"></i>
+        </a>
+    </div>
+    </div>
+    </div>
+    <div class="section">
+        <h5>{{package.desc}}</h5>
+    </div>
+    <div class="section">
+        <div class="row">
+            %for tag in package.tags:
+                <div class="col-sm-4">
+                    <h5><strong>
+                        <a href="tags/{{tag.name}}">#{{tag.name}}</a>
+                    </strong></h5>
+                </div>
+            %end
+        </div>
+    </div>
+    </div>
+    </div>
+    % counter += 1
+    % if counter == 3:
+            </div>
+    %   counter = 0
+    % end
+    % end
+    % if counter < 3:
+        </div>
+    %end
+
+    <div class="row responsive-margin">
+    <div class="col-sm-8 col-sm-offset-2" style="text-align: center;"><h2>Tags List</h2></div>
+    </div>
+    % counter = 0
+    %for tag in tags:
+    % if counter == 0:
+        <div class="row">
+    % end
+        <div class="col-sm-4">
+   <div class="card">
+    <div class="section">
+        <div class="row">
+     <div class="col-sm-8"><h2>{{tag.name.capitalize()}}</h2></div>
+     <div class="col-sm-1"><mark class="tertiary shadowed">{{len(tag.packages)}}</mark></div>
+     <div class="col-sm-2"><a href="tags/{{tag.name}}"><i data-feather="info"></i></a></div>
+    </div>
+    </div>
+    </div>
+    </div>
+    % counter += 1
+    % if counter == 3:
+            </div>
+    %   counter = 0
+    % end
+    % end
+    % if counter < 3:
+        </div>
+    %end
+
+
+
+</div>
+<script>
+  feather.replace();
+</script>
+</body>
+</html>

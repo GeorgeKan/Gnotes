@@ -1,0 +1,23 @@
+% include('header.html', title='Add New Tag')
+<body>
+    <div class="container">
+    % include('menu.html', title="Add Tag")
+    <form action="/tags/add" method="POST">
+        <fieldset>
+            <legend>Add New Tag</legend>
+            <label for="tagname">Tag :</label>
+            <input type="text" name="tagname" id="tagname"/>
+        <input type="submit" value="Add Tag"/>
+        </fieldset>
+    </form>
+    <div class="row">
+        <div class="col-sm-2">
+            <a href="/tags" class="button shadowed">Cancel</a>
+        </div>
+        <div class="col-sm-8 col-sm-offset-2">
+            <h4>{{msg}}</h4>
+        </div>    
+    </div>
+    </div>
+</body>
+</html>

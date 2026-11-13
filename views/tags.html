@@ -1,0 +1,56 @@
+% include('header.html', title='Tags Page')
+<body>
+    <div class="container">
+    % include('menu.html', title="Tags Main")
+    <div class="row responsive-margin">
+    <div class="col-sm-8 col-sm-offset-2" style="text-align: center;"><h2>Tags List</h2></div>
+    </div>
+
+     <form action="/tags" method="POST">
+        <fieldset>
+            <legend>Filter Tags</legend>
+            <label for="filter">Filter :</label>
+            <input type="text" name="filter" id="filter"/>
+        <input type="submit" value="Show"/>
+        </fieldset>
+    </form>
+
+    % counter = 0
+    %for tag in tags:
+    % if counter == 0:
+        <div class="row">
+    % end
+        <div class="col-sm-4">
+   <div class="card">
+    <div class="section">
+        <div class="row">
+     <div class="col-sm-8"><h2>{{tag.name.capitalize()}}</h2></div>
+     <div class="col-sm-1"><mark class="tertiary shadowed">{{len(tag.packages)}}</mark></div>
+     <div class="col-sm-2">
+        <a href="tags/{{tag.name}}">
+        <i data-feather="info"></i></a></div>
+    </div>
+    </div>
+    </div>
+    </div>
+    % counter += 1
+    % if counter == 3:
+            </div>
+    %   counter = 0
+    % end
+    % end
+    % if counter < 3:
+        </div>
+    %end
+   <div class="row responsive-margin">
+        <div class="col-sm-4">
+            <a href="/tags/add" class="button">Add New Tag</a>
+        </div>
+    </div>
+
+    </div>
+    <script>
+  feather.replace();
+</script>
+</body>
+</html>

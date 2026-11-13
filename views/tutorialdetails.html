@@ -1,0 +1,74 @@
+% include('header.html', title='Tutorial Details')
+<body>
+    <div class="container">
+    % include('menu.html', title="Tut details")
+    
+    <div class="row responsive-margin">
+    <div class="col-sm-4 col-sm-offset-1">
+        <h2>{{tutorial.name.capitalize()}}</h2></div>
+    
+    <div class="col-sm-1">
+        <a href="/tutorials/edit/{{tutorial.id}}">
+        <i data-feather="edit"></i>
+        </a>
+    </div>
+    <div class="col-sm-1" data-id="{{tutorial.id}}" id="deleteTutorial">
+            <i data-feather="x-square"></i>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-1" >
+            <h4>{{tutorial.desc}}</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-1">
+            <h4>{{tutorial.url}}</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-1">
+            <pre>{{ !tutorial.info or "<p><strong>No Package info or Code</strong></p>" }}</pre>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2"></div>
+            %for tag in tutorial.tags:
+                <div class="col-sm-3">
+                    <h5><strong>
+                        <a href="tags/{{tag.name}}">#{{tag.name}}</a>
+                    </strong></h5>
+                </div>
+            %end
+        </div>
+
+    <div class="row responsive-margin">
+        <div class="col-sm-4">
+            <a href="/tutorials" class="button">Back To Tutorials</a>
+        </div>
+    </div>
+
+     </div>
+      <script>
+      feather.replace();
+        delete_button = document.getElementById("deleteTutorial")
+      delete_button.addEventListener('click',async () => {
+        data = {
+            id: Number(delete_button.dataset.id)
+        }    
+        const responce = await fetch('/tutorials/del', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(data)
+        });
+        if(!responce.ok) {
+            alert('Errror. I can not delete tutorial')
+        }
+        const result = await responce.json()
+        window.location.href = result.redirect
+      });
+
+    </script>
+</body>
+</html>
